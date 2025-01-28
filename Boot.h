@@ -31,13 +31,13 @@
 #define __BOOT_H__
 
 typedef struct {
-  UINT16 Width;
-  UINT16 Height;
-  UINT16 BitmapWidth;
-  UINT16 BitmapHeight;
-  UINTN NumberOfSymbols;
-  UINT8 *Bitmap;
-  UINT32 *RenderedFont;
+	UINT16 Width;
+	UINT16 Height;
+	UINT16 BitmapWidth;
+	UINT16 BitmapHeight;
+	UINTN NumberOfSymbols;
+	UINT8 *Bitmap;
+	UINT32 *RenderedFont;
 } FONT;
 
 EFI_STATUS boot_console_init(EFI_GRAPHICS_OUTPUT_PROTOCOL *GraphicsOutput, FONT *Font);

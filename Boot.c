@@ -40,15 +40,15 @@
 #include "Boot.h"
 
 typedef struct {
-  UINTN Pa;             /* Physical address of page range */
-  UINTN Va;             /* Virtual address of page range */
-  UINTN NumberOfPages;  /* Number of pages in range */
-  UINTN AddrOffset;     /* Offset from image base */
-  UINTN ElfPermFlags;   /* Page range permission flags */
+	UINTN Pa;             /* Physical address of page range */
+	UINTN Va;             /* Virtual address of page range */
+	UINTN NumberOfPages;  /* Number of pages in range */
+	UINTN AddrOffset;     /* Offset from image base */
+	UINTN ElfPermFlags;   /* Page range permission flags */
 } ELF_SEGMENT_DESCRIPTOR;
 
 EFI_HANDLE BootImageHandle;
-EFI_SYSTEM_TABLE  *BootSystemTable;
+EFI_SYSTEM_TABLE *BootSystemTable;
 
 EFI_STATUS
 boot_load_elf(
@@ -63,7 +63,7 @@ boot_load_elf(
 	ELF_HEADER64 *ElfHeader;
 	ELF_PH64 *ElfProgramHeader;
 
-  return Status;
+	return Status;
 
 	Status = Volume->Open(
 			Volume,
@@ -177,8 +177,8 @@ boot_load_elf(
 		
 		Status = gBS->AllocatePages(AllocateAnyPages, EfiLoaderData, SegmentPages, (EFI_PHYSICAL_ADDRESS *)&SegmentArray[SegmentArrayUsedSize].Pa);
 		if(EFI_ERROR(Status)) {
-		  Print(L"Error while allocating image memory\n");
-		  return Status;
+			Print(L"Error while allocating image memory\n");
+			return Status;
 		}
 		SegmentArray[SegmentArrayUsedSize].NumberOfPages = SegmentPages;
 		SegmentArray[SegmentArrayUsedSize].AddrOffset = ElfProgramHeader[Index].Offset;
@@ -223,87 +223,41 @@ UefiMain (
 	FONT Gallant;
 	
 	Gallant.Width = 16;
-  Gallant.Height = 22;
-  Gallant.BitmapWidth = 2;
-  Gallant.BitmapHeight = 22;
-  Gallant.NumberOfSymbols = 113 + 95;
-  Gallant.Bitmap = FONTDATA_12x22;
-  Gallant.RenderedFont = NULL;
+	Gallant.Height = 22;
+	Gallant.BitmapWidth = 2;
+	Gallant.BitmapHeight = 22;
+	Gallant.NumberOfSymbols = 113 + 95;
+	Gallant.Bitmap = FONTDATA_12x22;
+	Gallant.RenderedFont = NULL;
 	
 	BootImageHandle = ImageHandle;
 	BootSystemTable = SystemTable;
 	
 	Status = gBS->LocateProtocol(
-      &gEfiGraphicsOutputProtocolGuid,
-      NULL,
-      (VOID**) &GraphicsOutput);
+		&gEfiGraphicsOutputProtocolGuid,
+		NULL,
+		(VOID**) &GraphicsOutput);
       
-  if(EFI_ERROR(Status)) {
-    Print(L"Error while locating EFI_GRAPHICS_OUTPUT_PROTOCOL: %lx\n", Status);
+	if(EFI_ERROR(Status)) {
+    		Print(L"Error while locating EFI_GRAPHICS_OUTPUT_PROTOCOL: %lx\n", Status);
 		return Status;		
-  }
+  	}
 
-  Status = boot_console_init(GraphicsOutput, &Gallant);
-  if(EFI_ERROR(Status)) {
-    Print(L"Error while initializing boot console: %lx\n", Status);
+	Status = boot_console_init(GraphicsOutput, &Gallant);
+	if(EFI_ERROR(Status)) {
+		Print(L"Error while initializing boot console: %lx\n", Status);
 		return Status;	
-  }
-  //boot_error(EFI_SUCCESS, "Error: error test\n");
+	}
+	//boot_error(EFI_SUCCESS, "Error: error test\n");
   
-  boot_print("Test: %d\n", 50);
-  //boot_print(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\nNew line test\n");
+	boot_print("Test: %d\n", 50);
+	//boot_print(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\nNew line test\n");
   
-  for(UINTN i = 0; i < 40; i++)
-  {
-    //boot_print("console scroll test :3\n");
-  }
-#if 0
-  ConsoleBuffer[20 * CharWidth + 0] = 0;
-  ConsoleBuffer[20 * CharWidth + 1] = 1;
-  ConsoleBuffer[20 * CharWidth + 2] = 2;
-  ConsoleBuffer[20 * CharWidth + 3] = 3;
-  ConsoleBuffer[20 * CharWidth + 4] = 4;
-  ConsoleBuffer[20 * CharWidth + 5] = 5;
-  ConsoleBuffer[20 * CharWidth + 6] = 6;
-  ConsoleBuffer[20 * CharWidth + 7] = 7;
-  ConsoleBuffer[20 * CharWidth + 8] = 8;
-  ConsoleBuffer[20 * CharWidth + 9] = 9;
-  ConsoleBuffer[20 * CharWidth + 10] = 10;
-  ConsoleBuffer[20 * CharWidth + 11] = 11;
-  ConsoleBuffer[20 * CharWidth + 12] = 12;
-  ConsoleBuffer[20 * CharWidth + 13] = 13;
-  ConsoleBuffer[20 * CharWidth + 14] = 14;
-  ConsoleBuffer[20 * CharWidth + 15] = 15;
-  ConsoleBuffer[20 * CharWidth + 16] = 16;
-  
-  ConsoleBuffer[20 * CharWidth + 17] = 113;
-  ConsoleBuffer[20 * CharWidth + 18] = 114;
-  ConsoleBuffer[20 * CharWidth + 19] = 115;
-  ConsoleBuffer[20 * CharWidth + 20] = 116;
-  ConsoleBuffer[20 * CharWidth + 21] = 117;
-  ConsoleBuffer[20 * CharWidth + 22] = 118;
-  ConsoleBuffer[20 * CharWidth + 23] = 119;
-  ConsoleBuffer[20 * CharWidth + 24] = 120;
-  ConsoleBuffer[20 * CharWidth + 25] = 121;
-  ConsoleBuffer[20 * CharWidth + 26] = 122;
-  ConsoleBuffer[20 * CharWidth + 27] = 123;
-  ConsoleBuffer[20 * CharWidth + 28] = 124;
-  ConsoleBuffer[20 * CharWidth + 29] = 125;
-  ConsoleBuffer[20 * CharWidth + 30] = 126;
-  
-  ConsoleBuffer[20 * CharWidth + 31] = 127;
-  ConsoleBuffer[20 * CharWidth + 32] = 128;
-  ConsoleBuffer[20 * CharWidth + 33] = 129;
-  ConsoleBuffer[20 * CharWidth + 34] = 130;
-  ConsoleBuffer[20 * CharWidth + 35] = 131;
-  ConsoleBuffer[20 * CharWidth + 36] = 132;
-  ConsoleBuffer[20 * CharWidth + 37] = 133;
-  ConsoleBuffer[20 * CharWidth + 38] = 134;
-  ConsoleBuffer[20 * CharWidth + 39] = 135;
-  ConsoleBuffer[20 * CharWidth + 40] = 136;
-  
-  boot_draw_console_buffer();
-  #endif
+	for(UINTN i = 0; i < 40; i++)
+	{
+		//boot_print("console scroll test :3\n");
+	} 
+ 
 	Status = gBS->HandleProtocol(
 			ImageHandle, 
 			&gEfiLoadedImageProtocolGuid, 
@@ -313,7 +267,7 @@ UefiMain (
 	{
 		Print(L"Error while locating EFI_LOADED_IMAGE_PROTOCOL: %lx\n", Status);
 		return Status;		
-  }
+	}
 
 	Status = gBS->HandleProtocol(
 			LoadedImage->DeviceHandle, 
@@ -336,9 +290,9 @@ UefiMain (
 	}
 
 	Status = boot_load_elf(L"kernel", Volume);
-  if(EFI_ERROR(Status)) {
-    Print(L"Loading ELF image %S failed, status: %lx\n", L"kernel", Status);
-  }
+	if(EFI_ERROR(Status)) {
+		Print(L"Loading ELF image %S failed, status: %lx\n", L"kernel", Status);
+	}
 
 	return Status;
 }

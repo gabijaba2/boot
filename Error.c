@@ -42,36 +42,36 @@ extern EFI_SYSTEM_TABLE *BootSystemTable;
 
 VOID boot_error(EFI_STATUS ExitStatus, CHAR8 *Msg, ...)
 {
-  EFI_STATUS Status = EFI_SUCCESS;
-  UINTN Index;
-  EFI_INPUT_KEY Key;
-  VA_LIST Args;
-  CHAR8 Buffer[1024];
+	EFI_STATUS Status = EFI_SUCCESS;
+	UINTN Index;
+	EFI_INPUT_KEY Key;
+	VA_LIST Args;
+	CHAR8 Buffer[1024];
   
-  VA_START(Args, Msg);
+	VA_START(Args, Msg);
   
-  AsciiSPrint(Buffer, 1024, Msg, Args);
+	AsciiSPrint(Buffer, 1024, Msg, Args);
   
-  boot_print(Buffer);
-  boot_print("Press any key to return to firmware\n");
+	boot_print(Buffer);
+	boot_print("Press any key to return to firmware\n");
   
-  VA_END(Args);
+	VA_END(Args);
   
-  while(1) {
-    gBS->WaitForEvent(1, BootSystemTable->ConIn->WaitForKey, &Index);
+	while(1) {
+		gBS->WaitForEvent(1, BootSystemTable->ConIn->WaitForKey, &Index);
     
-    Status = BootSystemTable->ConIn->ReadKeyStroke(BootSystemTable->ConIn, &Key); 
-    if(EFI_ERROR(Status)) {
-      if(Status == EFI_NOT_READY) {
-        continue;
-      } else {
-        break;
-      }
-    }
+		Status = BootSystemTable->ConIn->ReadKeyStroke(BootSystemTable->ConIn, &Key); 
+		if(EFI_ERROR(Status)) {
+			if(Status == EFI_NOT_READY) {
+				continue;
+			} else {
+				break;
+			}
+		}
     
-    break;
-  }
+		break;
+	}
   
-  gBS->Exit(BootImageHandle, ExitStatus, 0, NULL);
+	gBS->Exit(BootImageHandle, ExitStatus, 0, NULL);
 
 }
